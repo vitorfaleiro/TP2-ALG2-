@@ -274,3 +274,43 @@ adicionais e comparações entre diferentes implementações.
 - Medir o consumo de memória.
 - Avaliar o impacto das estratégias de warm-start.
 - Investigar possíveis otimizações no cálculo do lower bound.
+
+## Registro 07 — Twice-around-the-tree
+
+**Status:** Implementação inicial concluída e validada.
+
+### Contribuição da IA
+- Utilização do algoritmo de Prim para construir a AGM.
+- Proposta de representação da árvore por lista de adjacência.
+- Implementação do percurso DFS utilizando pilha.
+- Elaboração dos testes automatizados.
+
+### Minha participação
+- Execução e validação dos testes automatizados.
+- Execução da comparação com Nearest Neighbor na eil51.
+- Coleta e análise inicial dos resultados.
+
+### Resultados
+Instância: eil51 (51 cidades).
+
+Nearest Neighbor:
+- Custo: 511.
+- Tempo: 0,000107 s.
+
+Twice-around-the-tree:
+- Custo: 581.
+- Tempo: 0,000364 s.
+
+Os 16 testes automatizados disponíveis foram aprovados.
+
+Na execução realizada, o Nearest Neighbor produziu uma
+rota aproximadamente 12% menor que Twice-around-the-tree.
+
+Os tempos foram obtidos em execuções individuais e ainda
+não constituem uma comparação estatística de desempenho.
+
+### Próximas etapas
+- Instrumentar separadamente a construção da AGM.
+- Realizar experimentos repetidos.
+- Reutilizar a AGM na implementação de Christofides.
+- Integrar Twice-around-the-tree como warm-start do Branch-and-Bound.
