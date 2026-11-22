@@ -364,3 +364,42 @@ em outras instâncias e execuções repetidas.
 - Refinar o profiling do matching.
 - Implementar Convex Hull.
 - Integrar as cinco estratégias de warm-start.
+
+## Registro 09 — Convex Hull + Cheapest Insertion
+
+**Status:** Implementação inicial concluída e comparação realizada.
+
+### Contribuição da IA
+- Fornecimento da implementação inicial do Monotonic Chain.
+- Orientação sobre utilização do produto vetorial.
+- Proposta de utilização do Cheapest Insertion.
+- Elaboração dos testes automatizados.
+
+### Minha participação
+- Implementação local das funções.
+- Compreensão das decisões geométricas e computacionais.
+- Execução dos testes e comparação das heurísticas.
+- Coleta e análise dos resultados.
+
+### Resultados — eil51
+
+- Nearest Neighbor: custo 511; tempo 0,000213 s.
+- Twice-around-the-tree: custo 581; tempo 0,000456 s.
+- Christofides: custo 474; tempo 0,007244 s.
+- Convex Hull + Cheapest Insertion: custo 442; tempo 0,003525 s.
+
+O Convex Hull apresentou a menor rota entre as quatro
+heurísticas avaliadas nessa execução.
+
+A redução de custo foi de aproximadamente:
+- 13,50% em relação ao Nearest Neighbor.
+- 6,75% em relação ao Christofides.
+- 23,92% em relação ao Twice-around-the-tree.
+
+Os resultados são preliminares e correspondem a execuções
+individuais na instância eil51.
+
+### Próximas etapas
+- Integrar as heurísticas ao Branch-and-Bound.
+- Comparar o efeito de cada warm-start na busca exata.
+- Completar o profiling e os experimentos.
