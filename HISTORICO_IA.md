@@ -370,13 +370,11 @@ em outras instâncias e execuções repetidas.
 **Status:** Implementação inicial concluída e comparação realizada.
 
 ### Contribuição da IA
-- Fornecimento da implementação inicial do Monotonic Chain.
 - Orientação sobre utilização do produto vetorial.
 - Proposta de utilização do Cheapest Insertion.
 - Elaboração dos testes automatizados.
 
 ### Minha participação
-- Implementação local das funções.
 - Compreensão das decisões geométricas e computacionais.
 - Execução dos testes e comparação das heurísticas.
 - Coleta e análise dos resultados.
@@ -403,3 +401,47 @@ individuais na instância eil51.
 - Integrar as heurísticas ao Branch-and-Bound.
 - Comparar o efeito de cada warm-start na busca exata.
 - Completar o profiling e os experimentos.
+
+
+## Registro 10 — Integração das estratégias de warm-start
+
+**Status:** Integração inicial concluída e testes automatizados aprovados.
+
+### Assistência utilizada
+
+Orientação para integração das diferentes estratégias de inicialização ao Branch-and-Bound.
+
+### Contribuição da IA
+
+- Orientação para modificar o Branch-and-Bound para receber diferentes soluções iniciais.
+- Proposta de instrumentação dos tempos de inicialização, busca e execução total.
+- Elaboração dos testes automatizados para validar a integração.
+
+### Minha participação
+
+- Implementação e integração dos módulos no projeto.
+- Compreensão da separação entre geração da solução inicial e busca exata.
+- Execução dos testes automatizados.
+- Identificação e correção de divergências nos resultados esperados dos testes.
+
+### Estratégias integradas
+
+1. Cold Start.
+2. Nearest Neighbor.
+3. Convex Hull + Cheapest Insertion.
+4. Twice-around-the-tree.
+5. Christofides.
+
+### Resultados
+
+- Integração das cinco estratégias ao Branch-and-Bound.
+- Validação da geração de rotas iniciais válidas.
+- Verificação da compatibilidade das estratégias com a busca exata.
+- 33 testes automatizados aprovados.
+
+### Próximas etapas
+
+- Implementar o executor experimental comparativo.
+- Selecionar as instâncias TSPLIB para os experimentos oficiais.
+- Realizar profiling de tempo e memória.
+- Avaliar o impacto das estratégias na quantidade de nós expandidos e podados.

@@ -4,7 +4,7 @@ from time import perf_counter
 
 from src.heuristicas import vizinhoMaisProximo
 from src.rotas import calcularCustoRota
-
+from src.inicializacao import gerarRotaInicial
 
 @dataclass
 class ResultadoBusca:
@@ -16,6 +16,10 @@ class ResultadoBusca:
     nosPodados: int
     nosCompletos: int
     status: str
+    warmStart: str
+    custoInicial: int
+    tempoWarmStart: float
+    tempoBusca: float
 
 
 def calcularAgmRestante(cidades, matrizDistancias):
@@ -79,7 +83,14 @@ def calcularLimiteInferior(
     return custoParcial + custoAgm + conexaoAtual + conexaoInicial
 
 
-def branchAndBound(matrizDistancias, tempoLimite=1800, cidadeInicial=0):
+
+def branchAndBound(
+    matrizDistancias,
+    tempoLimite=1800,
+    cidadeInicial=0,
+    warmStart="nearest",
+    coordenadas=None
+):
     quantidadeCidades = len(matrizDistancias)
 
     if quantidadeCidades < 2:
@@ -91,11 +102,37 @@ def branchAndBound(matrizDistancias, tempoLimite=1800, cidadeInicial=0):
     if tempoLimite <= 0 or tempoLimite > 1800:
         raise ValueError("O tempo limite deve estar entre 0 e 1800 segundos.")
 
-    inicio = perf_counter()
-    prazo = inicio + tempoLimite
+    if len(matrizDistancias) != quantidadeCidades or any(
+        len(linha) != quantidadeCidades
+        for linha in matrizDistancias
+    ):
+        raise ValueError("A matriz de distâncias deve ser quadrada.")
 
-    melhorRota = vizinhoMaisProximo(matrizDistancias, cidadeInicial)
-    melhorCusto = calcularCustoRota(melhorRota, matrizDistancias)
+    inicioTotal = perf_counter()
+
+    inicioWarmStart = perf_counter()
+
+    if warmStart == "convex_hull" and coordenadas is None:
+        raise ValueError("As coordenadas são necessárias para o Convex Hull.")
+
+    melhorRota = gerarRotaInicial(
+        matrizDistancias,
+        coordenadas,
+        warmStart,
+        cidadeInicial
+    )
+
+    tempoWarmStart = perf_counter() - inicioWarmStart
+
+    melhorCusto = calcularCustoRota(
+        melhorRota,
+        matrizDistancias
+    )
+
+    custoInicial = melhorCusto
+
+    inicioBusca = perf_counter()
+    prazo = inicioBusca + tempoLimite
 
     nosExpandidos = 0
     nosPodados = 0
@@ -197,7 +234,8 @@ def branchAndBound(matrizDistancias, tempoLimite=1800, cidadeInicial=0):
     else:
         buscar(cidadeInicial, 0)
 
-    tempoTotal = perf_counter() - inicio
+    tempoBusca = perf_counter() - inicioBusca
+    tempoTotal = perf_counter() - inicioTotal
 
     return ResultadoBusca(
         rota=melhorRota,
@@ -207,5 +245,9 @@ def branchAndBound(matrizDistancias, tempoLimite=1800, cidadeInicial=0):
         nosExpandidos=nosExpandidos,
         nosPodados=nosPodados,
         nosCompletos=nosCompletos,
-        status="TIMEOUT" if interrompido else "OTIMO"
+        status="TIMEOUT" if interrompido else "OTIMO",
+        warmStart=warmStart,
+        custoInicial=custoInicial,
+        tempoWarmStart=tempoWarmStart,
+        tempoBusca=tempoBusca
     )
