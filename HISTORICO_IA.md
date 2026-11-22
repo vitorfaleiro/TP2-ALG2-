@@ -1,0 +1,93 @@
+
+# Histórico de utilização de Inteligência Artificial
+
+Este documento reúne os registros de utilização de ferramentas de Inteligência Artificial durante o desenvolvimento do Trabalho Prático 2 de Algoritmos 2.
+
+O histórico foi organizado com auxílio do próprio ChatGPT ao longo do desenvolvimento, buscando documentar as solicitações, implementações, testes, decisões técnicas e refatorações realizadas.
+
+Os registros descrevem as contribuições da IA e minha participação no desenvolvimento, sem atribuir decisões ou atividades que não tenham sido efetivamente realizadas.
+
+Os prompts originais utilizados durante o projeto serão preservados em um anexo cronológico, complementando os registros técnicos apresentados neste documento.
+
+## Registro 01 — Leitura de instâncias TSPLIB
+
+**Status:** Implementação inicial concluída e validada.
+
+### Assistência utilizada
+
+Orientação conceitual e auxílio na implementação do leitor de instâncias TSPLIB.
+
+### Contribuição da IA
+
+- Apresentação das alternativas de representação das coordenadas por lista de tuplas ou dicionário.
+- Sugestão de organização das coordenadas pelos identificadores das cidades.
+- Proposição de validações e testes.
+- Explicação das estruturas de dados e das decisões de implementação.
+
+### Minha participação
+
+- Escolha da lista de tuplas como estrutura de armazenamento, considerando simplicidade e consumo de memória.
+- Discussão e compreensão da estratégia de indexação pelos identificadores.
+- Execução dos testes com a instância eil51 e arquivos artificiais.
+- Verificação dos resultados e identificação dos comportamentos esperados.
+
+### Resultados
+
+- Leitura correta do cabeçalho da instância eil51.
+- Armazenamento das 51 coordenadas.
+- Organização correta de cidades apresentadas fora de ordem.
+- Detecção de IDs duplicados, ausentes e fora do intervalo permitido.
+
+## Registro 02 — Auditoria e refatoração do leitor TSPLIB
+
+**Status:** Primeira refatoração concluída e testes manuais executados.
+
+### Problemas identificados
+
+- Leitura do mesmo arquivo duas vezes.
+- Ausência de validação para dimensão zero ou negativa.
+- Mensagens genéricas para coordenadas não numéricas.
+- Ausência de validação para valores não finitos.
+- Ausência de restrição ao tipo de distância EUC_2D.
+- Tratamento insuficiente de cabeçalhos incompletos.
+
+### Contribuição da IA
+
+- Identificação de possíveis limitações da implementação inicial.
+- Apresentação de alternativas para reorganização do leitor.
+- Sugestão de validações adicionais.
+- Orientação para execução dos testes de regressão.
+
+### Minha participação
+
+- Escolha da arquitetura simplificada com duas funções.
+- Substituição da implementação anterior pela versão refatorada.
+- Execução dos testes antes e depois das alterações.
+- Verificação das exceções e dos resultados apresentados.
+
+### Alterações realizadas
+
+- Substituição das leituras separadas por uma única passagem pelo arquivo.
+- Criação de uma função responsável pela interpretação dos dados.
+- Manutenção de uma função pública para leitura da instância.
+- Inclusão de verificações para dimensões inválidas.
+- Tratamento de erros de conversão numérica.
+- Validação de coordenadas finitas.
+- Restrição inicial ao formato de distância EUC_2D.
+
+### Resultados observados
+
+- Leitura correta da instância eil51 após a refatoração.
+- Preservação da organização de IDs fora de ordem.
+- Preservação da identificação de IDs duplicados e ausentes.
+- Detecção de IDs fora do intervalo permitido.
+- Rejeição de dimensão zero.
+- Rejeição de coordenadas não numéricas e infinitas.
+- Rejeição de tipos de distância incompatíveis.
+
+### Limitações e próximas etapas
+
+- Automatizar os testes atualmente executados de forma manual.
+- Completar a validação de casos de cabeçalho malformado.
+- Implementar a matriz de distâncias EUC_2D.
+- Instrumentar as execuções para coleta de métricas.
