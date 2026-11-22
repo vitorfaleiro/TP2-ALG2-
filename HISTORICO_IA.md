@@ -314,3 +314,53 @@ não constituem uma comparação estatística de desempenho.
 - Realizar experimentos repetidos.
 - Reutilizar a AGM na implementação de Christofides.
 - Integrar Twice-around-the-tree como warm-start do Branch-and-Bound.
+
+## Registro 08 — Implementação de Christofides
+
+**Status:** Implementação inicial concluída e testes aprovados.
+
+### Contribuição da IA
+- Orientação sobre identificação dos vértices de grau ímpar.
+- Utilização do NetworkX para matching perfeito de peso mínimo.
+- Multigrafo e circuito euleriano.
+- Proposta de instrumentação individual das etapas.
+
+### Minha participação
+- Instalação e configuração do NetworkX.
+- Execução dos testes automatizados.
+- Execução da comparação das três heurísticas.
+- Coleta e análise dos resultados.
+
+### Resultados — eil51
+
+- Nearest Neighbor: custo 511.
+- Twice-around-the-tree: custo 581.
+- Christofides: custo 474.
+- Vértices de grau ímpar: 24.
+- Tempo total do Christofides: 0,007040 s.
+- Tempo AGM: 0,000319 s.
+- Tempo matching: 0,006651 s.
+- Tempo circuito euleriano: 0,000033 s.
+- Tempo atalhos: 0,000006 s.
+
+Os 21 testes automatizados foram aprovados.
+
+### Análise inicial
+
+O Christofides encontrou a melhor rota entre as três
+heurísticas na instância eil51.
+
+O matching representou aproximadamente 94,5% do tempo
+total medido, indicando uma possível concentração do
+custo computacional nessa etapa.
+
+O tempo de matching inclui a construção do grafo e a
+execução da biblioteca NetworkX.
+
+Os resultados são preliminares e precisam ser avaliados
+em outras instâncias e execuções repetidas.
+
+### Próximas etapas
+- Refinar o profiling do matching.
+- Implementar Convex Hull.
+- Integrar as cinco estratégias de warm-start.
