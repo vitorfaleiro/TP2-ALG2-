@@ -7,8 +7,6 @@ O histórico foi organizado com auxílio do próprio ChatGPT ao longo do desenvo
 
 Os registros descrevem as contribuições da IA e minha participação no desenvolvimento, sem atribuir decisões ou atividades que não tenham sido efetivamente realizadas.
 
-Os prompts originais utilizados durante o projeto serão preservados em um anexo cronológico, complementando os registros técnicos apresentados neste documento.
-
 ## Registro 01 — Leitura de instâncias TSPLIB
 
 **Status:** Implementação inicial concluída e validada.
@@ -91,3 +89,42 @@ Orientação conceitual e auxílio na implementação do leitor de instâncias T
 - Completar a validação de casos de cabeçalho malformado.
 - Implementar a matriz de distâncias EUC_2D.
 - Instrumentar as execuções para coleta de métricas.
+
+
+## Registro 03 — Matriz de distâncias EUC_2D
+
+**Status:** Implementação concluída e testes iniciais aprovados.
+
+### Contribuição da IA
+
+- Proposta de matriz simétrica para armazenar os custos.
+- Sugestão de calcular apenas a metade superior da matriz.
+- Criação dos testes automatizados com unittest.
+
+### Minha participação
+
+- Escolha anterior da matriz de distâncias como estrutura de armazenamento.
+- Execução dos testes automatizados.
+- Verificação dos resultados obtidos.
+
+### Decisões técnicas
+
+- Utilização de lista de listas para representar a matriz.
+- Armazenamento de distâncias inteiras segundo EUC_2D.
+- Aproveitamento da simetria para evitar cálculos repetidos.
+- Consulta de distâncias em O(1).
+- Complexidade O(N²) para construção e armazenamento.
+
+### Resultados
+
+Os quatro testes automatizados foram aprovados:
+- Cálculo de distância conhecida.
+- Arredondamento EUC_2D.
+- Construção da matriz.
+- Simetria da matriz da instância eil51.
+
+Tempo total informado pelo unittest: 0,003 segundo.
+
+### Próximas etapas
+
+Implementar Nearest Neighbor e iniciar a instrumentação dos algoritmos.
