@@ -135,14 +135,12 @@ Implementar Nearest Neighbor e iniciar a instrumentação dos algoritmos.
 
 ### Contribuição da IA
 
-- Fornecimento da implementação inicial do Nearest Neighbor.
 - Proposta de utilização de uma lista para a rota e um conjunto para as cidades visitadas.
 - Separação do cálculo de custo da rota em uma função reutilizável.
 - Elaboração de testes automatizados.
 
 ### Minha participação
 
-- Implementação local dos módulos propostos.
 - Execução dos testes automatizados.
 - Verificação da validade da rota produzida para a instância eil51.
 - Registro e análise inicial dos resultados.
@@ -170,3 +168,109 @@ não necessariamente a solução ótima.
 Implementação do Branch-and-Bound, com instrumentação
 para medir tempo, nós expandidos, nós podados e efeito
 das estratégias de warm-start.
+
+## Registro 05 — Primeira implementação do Branch-and-Bound
+
+**Status:** Implementação inicial executada; validação ampliada pendente.
+
+### Contribuição da IA
+
+- Proposta de busca DFS com backtracking.
+- Utilização de limite inferior baseado em árvore geradora mínima.
+- Integração com warm-start Nearest Neighbor.
+- Inclusão de contadores e medição de tempo.
+
+### Minha participação
+
+- Execução do primeiro experimento instrumentado.
+- Coleta e apresentação dos resultados.
+- Acompanhamento da análise do comportamento do algoritmo.
+
+### Resultados iniciais
+
+Instância: teste_8
+Dimensão: 8 cidades
+Custo encontrado: 108
+Status: OTIMO
+Tempo total: 0,000288 s
+Tempo do limite inferior: 0,000194 s
+Nós expandidos: 47
+Nós podados: 35
+Rotas completas examinadas: 1
+
+O custo ótimo de 108 também foi confirmado por uma
+verificação independente utilizando força bruta.
+
+O tempo dedicado ao cálculo do limite inferior representou
+aproximadamente 67,3% do tempo total registrado.
+
+Essa proporção é preliminar e precisará ser investigada
+em execuções maiores e repetidas.
+
+### Próximas etapas
+
+- Validar o algoritmo em diferentes instâncias pequenas.
+- Automatizar experimentos com tamanhos progressivos.
+- Implementar medição de memória.
+- Investigar gargalos do limite inferior.
+- Comparar diferentes estratégias de warm-start.
+
+## Registro 06 — Primeiros experimentos do Branch-and-Bound
+
+**Status:** Primeiro lote experimental concluído.
+
+### Contribuição da IA
+
+- Proposta de execução progressiva com diferentes quantidades de cidades.
+- Orientação para utilização de limites de tempo.
+- Análise inicial dos resultados obtidos.
+
+### Minha participação
+
+- Execução dos experimentos.
+- Coleta e disponibilização dos dados.
+- Acompanhamento da análise dos resultados.
+- Identificação dos próximos experimentos necessários.
+
+### Configuração experimental
+
+- Algoritmo: Branch-and-Bound com DFS.
+- Warm-start: Nearest Neighbor.
+- Lower bound: baseado em árvore geradora mínima.
+- Instâncias: subconjuntos dos primeiros vértices da eil51.
+- Dimensões: 10, 12, 14, 16, 18 e 20 cidades.
+- Limite configurado: 10 segundos por execução.
+
+### Resultados
+
+Todas as seis execuções terminaram com status OTIMO.
+
+O tempo variou de aproximadamente 0,0015 segundo,
+para 10 cidades, a 0,9342 segundo, para 20 cidades.
+
+Na instância com 20 cidades:
+- Nós expandidos: 65.462.
+- Nós podados: 58.775.
+- Melhor custo: 243.
+- Tempo do lower bound: aproximadamente 0,8329 segundo.
+
+O cálculo do limite inferior representou aproximadamente
+89,2% do tempo registrado nessa execução.
+
+### Análise inicial
+
+Os resultados indicam crescimento significativo do esforço
+computacional conforme aumentamos a quantidade de cidades.
+
+O cálculo repetido do limite inferior baseado em AGM surgiu
+como possível gargalo de desempenho.
+
+Essa observação ainda precisa ser confirmada com experimentos
+adicionais e comparações entre diferentes implementações.
+
+### Próximas etapas
+
+- Executar novos testes com instâncias maiores.
+- Medir o consumo de memória.
+- Avaliar o impacto das estratégias de warm-start.
+- Investigar possíveis otimizações no cálculo do lower bound.

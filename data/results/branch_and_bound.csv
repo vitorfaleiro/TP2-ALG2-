@@ -1,0 +1,2 @@
+dataExecucao,instancia,dimensao,algoritmo,warmStart,tempoLimite,tempoTotal,tempoLimiteInferior,nosExpandidos,nosPodados,nosCompletos,melhorCusto,status
+2026-11-22T17:22:34,teste_8,8,Branch-and-Bound DFS,Nearest Neighbor,30,0.00028809999639634043,0.00019380002049729228,47,35,1,108,OTIMO

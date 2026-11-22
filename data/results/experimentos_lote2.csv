@@ -1,0 +1,4 @@
+dataExecucao,instancia,dimensao,algoritmo,warmStart,tempoLimite,tempoTotal,tempoLimiteInferior,nosExpandidos,nosPodados,nosCompletos,melhorCusto,status
+2026-11-22T17:38:58,eil51_sub22,22,Branch-and-Bound DFS,Nearest Neighbor,10,2.966200299997581,2.707797898714489,161980,148802,22,258,OTIMO
+2026-11-22T17:39:08,eil51_sub24,24,Branch-and-Bound DFS,Nearest Neighbor,10,9.953465500002494,9.170274699325091,446495,413452,25,271,OTIMO
+2026-11-22T17:39:18,eil51_sub26,26,Branch-and-Bound DFS,Nearest Neighbor,10,10.000035999997635,9.153259096688998,496208,457770,24,282,TIMEOUT
