@@ -1,26 +1,35 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyo
 
 # Ambientes virtuais
 .venv/
 venv/
 env/
 
-# Ferramentas e caches
+# Ferramentas e editores
+.vscode/
+.idea/
+
+# Cache e testes
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 .coverage
 htmlcov/
 
-# Configurações locais
-.vscode/
-.idea/
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
 
 # Arquivos temporários
 *.tmp
 *.log
+~$*
 
-# Resultados experimentais temporários
-data/results/temp/
+# Resultados derivados e regeneráveis
+data/results/analise/
+data/results/resultados_integrados.csv
+data/results/profiling_integrado.csv

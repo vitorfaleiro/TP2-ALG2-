@@ -26,6 +26,7 @@ class ResultadoBusca:
     nosPodadosCustoParcial: int
     profundidadeMaxima: int
     memoriaPicoMB: float
+    chamadasLimiteInferior: int
 
 
 def calcularAgmRestante(cidades, matrizDistancias):
@@ -146,7 +147,7 @@ def branchAndBound(
     custoInicial = melhorCusto
 
     inicioBusca = perf_counter()
-    prazo = inicioBusca + tempoLimite
+    prazo = inicioTotal + tempoLimite
 
     nosVisitados = 0
     nosExpandidos = 0
@@ -155,6 +156,7 @@ def branchAndBound(
     nosPodadosCustoParcial = 0
     nosCompletos = 0
     profundidadeMaxima = 0
+    chamadasLimiteInferior = 0
 
     tempoLimiteInferior = 0.0
     interrompido = False
@@ -170,6 +172,7 @@ def branchAndBound(
         nonlocal nosPodados, nosPodadosLimiteInferior
         nonlocal nosPodadosCustoParcial
         nonlocal profundidadeMaxima
+        nonlocal chamadasLimiteInferior
         nonlocal tempoLimiteInferior, interrompido
 
         if perf_counter() >= prazo:
@@ -204,6 +207,8 @@ def branchAndBound(
             return
 
         inicioLimite = perf_counter()
+
+        chamadasLimiteInferior += 1
 
         limiteInferior = calcularLimiteInferior(
             cidadeAtual,
@@ -293,5 +298,6 @@ def branchAndBound(
         nosPodadosLimiteInferior=nosPodadosLimiteInferior,
         nosPodadosCustoParcial=nosPodadosCustoParcial,
         profundidadeMaxima=profundidadeMaxima,
-        memoriaPicoMB=memoriaPicoMB
+        memoriaPicoMB=memoriaPicoMB,
+        chamadasLimiteInferior=chamadasLimiteInferior
     )
