@@ -445,3 +445,55 @@ Orientação para integração das diferentes estratégias de inicialização ao
 - Selecionar as instâncias TSPLIB para os experimentos oficiais.
 - Realizar profiling de tempo e memória.
 - Avaliar o impacto das estratégias na quantidade de nós expandidos e podados.
+
+
+### Auditoria e instrumentação do Branch-and-Bound
+
+**Alterações realizadas:**
+- Separação dos nós visitados, expandidos e completos.
+- Separação das podas por lower bound e custo parcial.
+- Inclusão da profundidade máxima da busca.
+- Preservação da instrumentação de tempos existente.
+
+**Validação:**
+- Suíte automatizada: 31 testes aprovados.
+- Validação específica dos contadores: pendente.
+
+### Validação da instrumentação e implementação do executor comparativo
+
+**Status:** Instrumentação validada e primeiro experimento comparativo concluído.
+
+**Assistência utilizada:** Orientação para medição de memória, validação das métricas de busca e ajuda no desenvolvimento do executor experimental das estratégias de warm-start.
+
+**Contribuição da IA:**
+
+- Orientação para validação das relações entre nós visitados, expandidos, completos e podados.
+- Definição da estrutura do CSV para armazenamento dos resultados experimentais.
+- Orientação para interpretação dos primeiros resultados obtidos.
+
+**Minha participação:**
+
+- Integração das alterações no módulo Branch-and-Bound.
+- Execução da suíte de testes automatizados.
+- Execução dos testes específicos de instrumentação e verificação dos contadores.
+- Execução do experimento comparativo com as cinco estratégias.
+- Verificação dos resultados e envio dos dados para análise.
+
+**Resultados:**
+
+- Suíte automatizada: 31 testes aprovados após as alterações de instrumentação.
+- Validação das relações entre nós visitados, expandidos, completos e podados.
+- Inclusão da medição do pico de memória Python.
+- Registro dos tempos de inicialização, busca, lower bound e execução total.
+- Implementação do executor automático das cinco estratégias de warm-start.
+- Geração de cinco registros experimentais no arquivo `data/results/experimentos_warm_start.csv`.
+- Execução das cinco estratégias na instância `teste_8`, todas com status OTIMO.
+- Identificação do Convex Hull + Cheapest Insertion como a estratégia com melhor solução inicial nesse experimento, com custo 108.
+
+**Próximas etapas:**
+
+- Seleção e preparação das instâncias TSPLIB com distância EUC_2D.
+- Implementação do profiling detalhado das subrotinas, incluindo AGM e matching.
+- Realização dos experimentos oficiais com limite de 1800 segundos por execução.
+- Extração das características geométricas das instâncias.
+- Análise estatística e comparação dos resultados.

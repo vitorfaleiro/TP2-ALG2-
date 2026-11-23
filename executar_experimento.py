@@ -9,23 +9,24 @@ from src.branch_and_bound import branchAndBound
 
 
 caminhoArquivo = "tests/instancias/teste_8.tsp"
+tempoLimite = 30
+
+estrategias = [
+    "cold",
+    "nearest",
+    "convex_hull",
+    "twice",
+    "christofides"
+]
 
 instancia = lerInstancia(caminhoArquivo)
+
+if instancia.tipoDistancia != "EUC_2D":
+    raise ValueError("A instância deve utilizar distância EUC_2D.")
+
 matriz = construirMatrizDistancias(instancia)
 
-resultado = branchAndBound(matriz, tempoLimite=30)
-
-print("Instância:", instancia.nome)
-print("Custo:", resultado.custo)
-print("Status:", resultado.status)
-print("Tempo:", round(resultado.tempo, 6), "s")
-print("Tempo lower bound:", round(resultado.tempoLimiteInferior, 6), "s")
-print("Nós expandidos:", resultado.nosExpandidos)
-print("Nós podados:", resultado.nosPodados)
-print("Nós completos:", resultado.nosCompletos)
-print("Rota:", [cidade + 1 for cidade in resultado.rota])
-
-caminhoResultados = Path("data/results/branch_and_bound.csv")
+caminhoResultados = Path("data/results/experimentos_warm_start.csv")
 caminhoResultados.parent.mkdir(parents=True, exist_ok=True)
 
 campos = [
@@ -35,30 +36,22 @@ campos = [
     "algoritmo",
     "warmStart",
     "tempoLimite",
+    "tempoInicializacao",
+    "tempoBusca",
     "tempoTotal",
-    "tempoLimiteInferior",
+    "tempoLowerBound",
+    "memoriaPicoMB",
+    "nosVisitados",
     "nosExpandidos",
-    "nosPodados",
     "nosCompletos",
+    "nosPodados",
+    "nosPodadosLimiteInferior",
+    "nosPodadosCustoParcial",
+    "profundidadeMaxima",
+    "custoInicial",
     "melhorCusto",
     "status"
 ]
-
-registro = {
-    "dataExecucao": datetime.now().isoformat(timespec="seconds"),
-    "instancia": instancia.nome,
-    "dimensao": instancia.dimensao,
-    "algoritmo": "Branch-and-Bound DFS",
-    "warmStart": "Nearest Neighbor",
-    "tempoLimite": 30,
-    "tempoTotal": resultado.tempo,
-    "tempoLimiteInferior": resultado.tempoLimiteInferior,
-    "nosExpandidos": resultado.nosExpandidos,
-    "nosPodados": resultado.nosPodados,
-    "nosCompletos": resultado.nosCompletos,
-    "melhorCusto": resultado.custo,
-    "status": resultado.status
-}
 
 arquivoExiste = caminhoResultados.exists()
 
@@ -68,6 +61,60 @@ with open(caminhoResultados, "a", newline="", encoding="utf-8") as arquivo:
     if not arquivoExiste or caminhoResultados.stat().st_size == 0:
         escritor.writeheader()
 
-    escritor.writerow(registro)
+    for estrategia in estrategias:
+        print("\n" + "=" * 55)
+        print("Estratégia:", estrategia)
+        print("Instância:", instancia.nome)
+        print("Dimensão:", instancia.dimensao)
+        print("=" * 55)
 
-print("Resultado registrado em:", caminhoResultados)
+        resultado = branchAndBound(
+            matriz,
+            tempoLimite=tempoLimite,
+            warmStart=estrategia,
+            coordenadas=instancia.coordenadas
+        )
+
+        registro = {
+            "dataExecucao": datetime.now().isoformat(timespec="seconds"),
+            "instancia": instancia.nome,
+            "dimensao": instancia.dimensao,
+            "algoritmo": "Branch-and-Bound DFS",
+            "warmStart": estrategia,
+            "tempoLimite": tempoLimite,
+            "tempoInicializacao": resultado.tempoWarmStart,
+            "tempoBusca": resultado.tempoBusca,
+            "tempoTotal": resultado.tempo,
+            "tempoLowerBound": resultado.tempoLimiteInferior,
+            "memoriaPicoMB": resultado.memoriaPicoMB,
+            "nosVisitados": resultado.nosVisitados,
+            "nosExpandidos": resultado.nosExpandidos,
+            "nosCompletos": resultado.nosCompletos,
+            "nosPodados": resultado.nosPodados,
+            "nosPodadosLimiteInferior": resultado.nosPodadosLimiteInferior,
+            "nosPodadosCustoParcial": resultado.nosPodadosCustoParcial,
+            "profundidadeMaxima": resultado.profundidadeMaxima,
+            "custoInicial": resultado.custoInicial,
+            "melhorCusto": resultado.custo,
+            "status": resultado.status
+        }
+
+        escritor.writerow(registro)
+        arquivo.flush()
+
+        print("Custo inicial:", resultado.custoInicial)
+        print("Melhor custo:", resultado.custo)
+        print("Status:", resultado.status)
+        print("Tempo inicialização:", f"{resultado.tempoWarmStart:.6f} s")
+        print("Tempo busca:", f"{resultado.tempoBusca:.6f} s")
+        print("Tempo total:", f"{resultado.tempo:.6f} s")
+        print("Memória:", f"{resultado.memoriaPicoMB:.6f} MB")
+        print("Nós visitados:", resultado.nosVisitados)
+        print("Nós expandidos:", resultado.nosExpandidos)
+        print("Nós podados:", resultado.nosPodados)
+        print("Profundidade máxima:", resultado.profundidadeMaxima)
+
+        print("Resultado registrado no CSV.")
+
+print("\nExperimentos concluídos.")
+print("Arquivo:", caminhoResultados)

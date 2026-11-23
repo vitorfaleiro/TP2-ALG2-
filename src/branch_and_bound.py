@@ -1,10 +1,11 @@
 
 from dataclasses import dataclass
 from time import perf_counter
+import tracemalloc
 
-from src.heuristicas import vizinhoMaisProximo
 from src.rotas import calcularCustoRota
 from src.inicializacao import gerarRotaInicial
+
 
 @dataclass
 class ResultadoBusca:
@@ -20,6 +21,11 @@ class ResultadoBusca:
     custoInicial: int
     tempoWarmStart: float
     tempoBusca: float
+    nosVisitados: int
+    nosPodadosLimiteInferior: int
+    nosPodadosCustoParcial: int
+    profundidadeMaxima: int
+    memoriaPicoMB: float
 
 
 def calcularAgmRestante(cidades, matrizDistancias):
@@ -83,7 +89,6 @@ def calcularLimiteInferior(
     return custoParcial + custoAgm + conexaoAtual + conexaoInicial
 
 
-
 def branchAndBound(
     matrizDistancias,
     tempoLimite=1800,
@@ -102,17 +107,26 @@ def branchAndBound(
     if tempoLimite <= 0 or tempoLimite > 1800:
         raise ValueError("O tempo limite deve estar entre 0 e 1800 segundos.")
 
-    if len(matrizDistancias) != quantidadeCidades or any(
+    if any(
         len(linha) != quantidadeCidades
         for linha in matrizDistancias
     ):
         raise ValueError("A matriz de distâncias deve ser quadrada.")
+
+    if tracemalloc.is_tracing():
+        raise RuntimeError(
+            "Já existe uma medição tracemalloc ativa."
+        )
+
+    tracemalloc.start()
+    tracemalloc.reset_peak()
 
     inicioTotal = perf_counter()
 
     inicioWarmStart = perf_counter()
 
     if warmStart == "convex_hull" and coordenadas is None:
+        tracemalloc.stop()
         raise ValueError("As coordenadas são necessárias para o Convex Hull.")
 
     melhorRota = gerarRotaInicial(
@@ -134,9 +148,14 @@ def branchAndBound(
     inicioBusca = perf_counter()
     prazo = inicioBusca + tempoLimite
 
+    nosVisitados = 0
     nosExpandidos = 0
     nosPodados = 0
+    nosPodadosLimiteInferior = 0
+    nosPodadosCustoParcial = 0
     nosCompletos = 0
+    profundidadeMaxima = 0
+
     tempoLimiteInferior = 0.0
     interrompido = False
 
@@ -147,14 +166,22 @@ def branchAndBound(
 
     def buscar(cidadeAtual, custoParcial):
         nonlocal melhorRota, melhorCusto
-        nonlocal nosExpandidos, nosPodados, nosCompletos
+        nonlocal nosVisitados, nosExpandidos, nosCompletos
+        nonlocal nosPodados, nosPodadosLimiteInferior
+        nonlocal nosPodadosCustoParcial
+        nonlocal profundidadeMaxima
         nonlocal tempoLimiteInferior, interrompido
 
         if perf_counter() >= prazo:
             interrompido = True
             return
 
-        nosExpandidos += 1
+        nosVisitados += 1
+
+        profundidadeMaxima = max(
+            profundidadeMaxima,
+            len(rotaAtual) - 1
+        )
 
         cidadesRestantes = [
             cidade
@@ -194,7 +221,10 @@ def branchAndBound(
 
         if limiteInferior >= melhorCusto:
             nosPodados += 1
+            nosPodadosLimiteInferior += 1
             return
+
+        nosExpandidos += 1
 
         candidatos = sorted(
             cidadesRestantes,
@@ -216,6 +246,7 @@ def branchAndBound(
 
             if novoCusto >= melhorCusto:
                 nosPodados += 1
+                nosPodadosCustoParcial += 1
                 continue
 
             visitadas[proximaCidade] = True
@@ -229,13 +260,21 @@ def branchAndBound(
             if interrompido:
                 return
 
-    if perf_counter() >= prazo:
-        interrompido = True
-    else:
-        buscar(cidadeInicial, 0)
+    try:
+        if perf_counter() >= prazo:
+            interrompido = True
+        else:
+            buscar(cidadeInicial, 0)
 
-    tempoBusca = perf_counter() - inicioBusca
-    tempoTotal = perf_counter() - inicioTotal
+        tempoBusca = perf_counter() - inicioBusca
+        tempoTotal = perf_counter() - inicioTotal
+
+        _, memoriaPico = tracemalloc.get_traced_memory()
+
+    finally:
+        tracemalloc.stop()
+
+    memoriaPicoMB = memoriaPico / (1024 * 1024)
 
     return ResultadoBusca(
         rota=melhorRota,
@@ -249,5 +288,10 @@ def branchAndBound(
         warmStart=warmStart,
         custoInicial=custoInicial,
         tempoWarmStart=tempoWarmStart,
-        tempoBusca=tempoBusca
+        tempoBusca=tempoBusca,
+        nosVisitados=nosVisitados,
+        nosPodadosLimiteInferior=nosPodadosLimiteInferior,
+        nosPodadosCustoParcial=nosPodadosCustoParcial,
+        profundidadeMaxima=profundidadeMaxima,
+        memoriaPicoMB=memoriaPicoMB
     )
