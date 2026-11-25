@@ -215,9 +215,10 @@ Nearest Neighbor foi a heurística mais rápida em termos de tempo mediano. Conv
 \label{fig:tempos}
 \end{figure}
 
+
 \subsection{Branch-and-Bound e estratégias de inicialização}
 
-As 75 execuções oficiais resultaram em 50 conclusões com prova de otimalidade e 25 interrupções por tempo limite. Para cada uma das cinco estratégias, dez execuções terminaram com status \texttt{OTIMO} e cinco com \texttt{TIMEOUT}. Portanto, 66,7\% das execuções comprovaram a otimalidade e 33,3\% atingiram o limite configurado.
+As 75 execuções oficiais resultaram em 50 conclusões com prova de otimalidade e 25 interrupções por tempo limite. Para cada uma das cinco estratégias, dez execuções terminaram com status \texttt{OTIMO} e cinco com \texttt{TIMEOUT}. Portanto, 66,7\% das execuções comprovaram a otimalidade e 33,3\% atingiram o limite configurado de 1.800 segundos.
 
 \begin{table}[H]
 \centering
@@ -238,7 +239,34 @@ Total & 50 & 25 & 75\\
 \end{tabular}
 \end{table}
 
-A proporção idêntica de timeouts por estratégia não permite concluir, isoladamente, que as inicializações tenham desempenho equivalente. É necessário comparar os custos iniciais, os melhores custos obtidos, os tempos e os contadores de busca por instância, separando execuções ótimas de execuções interrompidas. Em particular, o custo final de uma execução \texttt{TIMEOUT} é um limite superior viável, não uma solução ótima certificada.
+Para comparar o impacto das inicializações sobre a busca, foram calculadas as medianas das métricas considerando somente as dez execuções que terminaram com prova de otimalidade em cada estratégia. Essa separação evita misturar execuções concluídas com aquelas interrompidas pelo limite de tempo.
+
+\begin{table}[H]
+\centering
+\caption{Impacto das estratégias de warm-start nas execuções ótimas.}
+\label{tab:warmstart}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Estratégia & Inicialização (s) & Busca (s) & Nós expandidos & Nós podados\\
+\midrule
+Cold & 0,000021 & 0,278803 & 711 & 6076\\
+Nearest & 0,000045 & 0,272404 & 709 & 6076\\
+Convex Hull & 0,000284 & 0,221207 & 432 & 4547\\
+Twice & 0,000170 & 0,267545 & 709 & 6076\\
+Christofides & 0,002961 & 0,272008 & 666 & 5933\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A estratégia Convex Hull apresentou o melhor resultado nessa comparação, reduzindo a mediana de nós expandidos de aproximadamente 711 para 432 em relação ao Cold Start. Também apresentou menor tempo mediano de busca, mesmo considerando o tempo necessário para construir a solução inicial.
+
+O Nearest Neighbor e o Twice-around-the-tree produziram resultados próximos aos do Cold Start em quantidade de nós expandidos e podados. Já Christofides apresentou uma redução moderada no número de nós, mas exigiu maior tempo de inicialização devido ao custo do matching.
+
+Assim, para as instâncias que foram resolvidas até a prova de otimalidade, o Convex Hull apresentou o melhor equilíbrio entre o custo de inicialização e a redução do esforço de busca. Entretanto, a vantagem não foi suficiente para evitar os timeouts nas instâncias maiores.
+
+Nas 25 execuções interrompidas, todas as estratégias atingiram o limite de 1.800 segundos. O custo encontrado nesses casos representa uma solução viável, mas não uma solução ótima comprovada. Portanto, não se deve interpretar esses resultados como demonstração de equivalência entre as estratégias.
+
 
 \subsection{Profiling de Christofides}
 
@@ -253,43 +281,64 @@ Esses resultados apontam o matching como o componente dominante nas medições a
 \label{fig:profilingtempo}
 \end{figure}
 
+
 \subsection{Características geométricas e escalabilidade}
 
 Foram calculadas características como razão entre dimensões do retângulo envolvente (\textit{aspect ratio}), proporção de vértices no fecho convexo, entropia espacial, grau máximo da AGM e coeficiente de variação das distâncias ao vizinho mais próximo. As associações foram avaliadas por correlação de Spearman, com ajuste de Holm.
 
 A associação mais consistente reportada foi entre a proporção de vértices no fecho convexo e o tempo de execução das heurísticas: os coeficientes de Spearman variaram de aproximadamente $-0{,}843$ a $-0{,}882$, com valores de $p$ ajustados inferiores a 0,003. Trata-se de uma associação negativa no conjunto observado: instâncias com maior proporção de vértices no fecho convexo tenderam a apresentar tempos menores. Como a amostra contém apenas 15 instâncias, e parte delas é derivada por seleção de vértices, esse resultado deve ser interpretado como exploratório, não causal.
 
+Para complementar a análise de correlação, foi ajustado um modelo de regressão linear múltipla relacionando as características geométricas ao gap médio das heurísticas aproximadas. A variável resposta foi calculada pela média dos gaps de Nearest Neighbor, Twice-around-the-tree e Christofides em cada instância. A heurística Convex Hull + Cheapest Insertion foi excluída dessa resposta por ter apresentado gap igual a zero em todas as instâncias, sendo utilizada como referência de comparação.
+
+Foram utilizadas como variáveis explicativas as cinco características extraídas anteriormente. O modelo obtido foi:
+
+\[
+\begin{aligned}
+\widehat{G} =\;& -88{,}145
++ 9{,}120 \cdot AR\\
+&+ 2{,}321 \cdot FC
++ 102{,}906 \cdot EE\\
+&+ 0{,}326 \cdot GA
++ 15{,}041 \cdot CV
+\end{aligned}
+\]
+
+Em que $AR$ representa a razão de aspecto, $FC$ a proporção de vértices no fecho convexo, $EE$ a entropia espacial, $GA$ o grau máximo da AGM e $CV$ o coeficiente de variação das distâncias ao vizinho mais próximo.
+
+O modelo apresentou $R^2 = 0{,}627$ e RMSE de 2,76 pontos percentuais, indicando que as características utilizadas explicaram aproximadamente 62,7\% da variação observada no gap médio das três heurísticas. Entretanto, como foram analisadas apenas 15 instâncias com cinco variáveis explicativas, o resultado deve ser considerado exploratório. Não é possível estabelecer relações causais ou afirmar que uma característica isolada seja responsável pelo aumento do gap, especialmente porque as variáveis podem apresentar relações entre si.
+
 Os modelos potência ajustados aos tempos das heurísticas apresentaram expoentes estimados de 1,63 para Nearest Neighbor, 1,61 para Twice-around-the-tree, 2,03 para Christofides e 2,83 para Convex Hull + Cheapest Insertion. Esses expoentes descrevem o ajuste empírico no intervalo de dimensões estudado; não constituem provas de complexidade assintótica e não devem ser extrapolados para dimensões muito maiores.
 
 \begin{table}[H]
 \centering
-\caption{Expoentes dos modelos potência ajustados aos tempos.}
+\caption{Expoentes e métricas dos modelos potência ajustados aos tempos.}
 \label{tab:expoentes}
-\begin{tabular}{lrr}
+\small
+\begin{tabular}{lrrr}
 \toprule
-Heurística & Expoente estimado & $R^2$\\
+Heurística & Expoente & $R^2$ & RMSE (log)\\
 \midrule
-Nearest Neighbor & 1,63 & 0,973\\
-Twice-around-the-tree & 1,61 & 0,968\\
-Christofides & 2,03 & 0,920\\
-Convex Hull + Cheapest Insertion & 2,83 & 0,996\\
+Nearest Neighbor & 1,63 & 0,973 & 0,147\\
+Twice-around-the-tree & 1,61 & 0,968 & 0,159\\
+Christofides & 2,03 & 0,920 & 0,327\\
+Convex Hull + Cheapest Insertion & 2,83 & 0,996 & 0,095\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\section{Conclusões}
 
-A realização dos experimentos permitiu observar diferenças claras entre as abordagens avaliadas. Neste conjunto de instâncias, Convex Hull + Cheapest Insertion produziu as rotas de menor custo entre as quatro heurísticas, enquanto Nearest Neighbor foi a opção mais rápida. Christofides também apresentou bons resultados de qualidade, mas teve um custo de execução maior, principalmente por causa da etapa de matching.
+\section{Conclusão}
 
-Os testes estatísticos reforçaram que existem diferenças entre as heurísticas, mas também mostraram que nem todos os pares apresentaram diferença significativa depois da correção de Holm. Por isso, a comparação não deve se apoiar somente na ordem dos rankings: é necessário considerar os valores observados e o resultado dos testes.
+A realização dos experimentos permitiu observar diferenças entre as abordagens avaliadas. Neste conjunto de instâncias, Convex Hull + Cheapest Insertion produziu as rotas de menor custo entre as quatro heurísticas, enquanto Nearest Neighbor foi a opção mais rápida. Christofides também apresentou bons resultados de qualidade, mas teve um custo de execução maior, principalmente por causa da etapa de matching.
 
-No Branch-and-Bound, 50 das 75 execuções terminaram com prova de otimalidade, enquanto 25 chegaram ao limite de 1.800 segundos. Isso mostra que, mesmo com diferentes estratégias de inicialização, a busca exata pode exigir um esforço elevado. Também reforça a necessidade de separar os casos em que o ótimo foi comprovado daqueles em que o algoritmo apenas encontrou uma boa rota antes de ser interrompido.
+Os testes estatísticos reforçaram que existem diferenças entre as heurísticas, mas também mostraram que nem todos os pares apresentaram diferença significativa depois da correção de Holm. Por isso, a comparação não deve se apoiar somente na ordem dos rankings, sendo necessário considerar os valores observados e os resultados dos testes.
 
-O profiling mostrou que o matching foi a etapa mais custosa de Christofides nas medições realizadas. Já as análises geométricas e os modelos de escalabilidade ajudaram a levantar possíveis relações entre as características das instâncias e o desempenho, mas devem ser vistos como resultados exploratórios, considerando a quantidade e a composição do conjunto utilizado.
+No Branch-and-Bound, 50 das 75 execuções terminaram com prova de otimalidade, enquanto 25 atingiram o limite de 1.800 segundos. A comparação das estratégias de inicialização mostrou que o Convex Hull apresentou o melhor desempenho entre as execuções concluídas, reduzindo a quantidade de nós expandidos e o tempo de busca. Apesar disso, nenhuma estratégia conseguiu evitar os timeouts nas instâncias mais difíceis.
+
+O profiling mostrou que o matching foi a etapa mais custosa de Christofides nas medições realizadas. Já as análises geométricas, as correlações e os modelos de escalabilidade permitiram investigar como as características das instâncias se relacionam com o desempenho e a qualidade das soluções. Entretanto, os resultados devem ser interpretados com cautela devido ao tamanho e à composição do conjunto experimental.
 
 Como continuação, seria interessante ampliar o conjunto com instâncias independentes, realizar novas execuções em condições controladas e aprofundar a comparação das estratégias de inicialização do Branch-and-Bound. Também seria válido investigar com mais detalhes como o arredondamento das distâncias influencia as propriedades métricas utilizadas nas garantias teóricas dos algoritmos.
 
-\section*{Referências}
 
 \begin{thebibliography}{9}
 
