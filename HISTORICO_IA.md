@@ -497,3 +497,71 @@ Orientação para integração das diferentes estratégias de inicialização ao
 - Realização dos experimentos oficiais com limite de 1800 segundos por execução.
 - Extração das características geométricas das instâncias.
 - Análise estatística e comparação dos resultados.
+
+
+## Registro 11 — Preparação do conjunto experimental e caracterização das instâncias
+
+**Status:** Conjunto preparado e caracterizado.
+
+### Assistência utilizada
+Discussão das etapas necessárias para organizar as instâncias e conferir a consistência do conjunto experimental.
+
+### Contribuição da IA
+- Esclarecimento sobre a organização de instâncias originais e derivadas.
+- Discussão das características geométricas que poderiam ser extraídas.
+- Sugestões para validar o catálogo e os arquivos de entrada.
+
+### Minha participação
+- Execução dos scripts de preparação e validação.
+- Conferência do catálogo e das instâncias geradas.
+- Execução da extração das características e verificação dos arquivos CSV.
+
+### Resultados registrados
+- Catálogo experimental com 15 instâncias.
+- Separação de instâncias originais, fontes e instâncias derivadas.
+- Geração da base de características geométricas utilizada nas análises.
+
+## Registro 12 — Profiling de subrotinas e integração dos resultados
+
+**Status:** Bases de profiling e resultados integrados geradas.
+
+### Assistência utilizada
+Discussão sobre a instrumentação das etapas internas de Christofides e a integração das bases experimentais.
+
+### Contribuição da IA
+- Esclarecimento sobre a importância de medir separadamente as subrotinas mais relevantes.
+- Discussão da interpretação dos tempos e da memória rastreada.
+- Sugestões para organizar e integrar os arquivos CSV produzidos pelas diferentes etapas.
+
+### Minha participação
+- Conferência da quantidade de registros e dos arquivos gerados.
+- Análise das medições e dos componentes que concentraram maior custo.
+
+### Resultados registrados
+- Base de profiling das subrotinas.
+- Base integrada de resultados experimentais.
+- Resumos e gráficos utilizados na análise do relatório.
+
+## Registro 13 — Análise estatística, regressões e interpretação
+
+**Status:** Análises executadas e resultados incorporados ao relatório.
+
+### Assistência utilizada
+Esclarecimento dos métodos estatísticos e discussão da interpretação dos resultados obtidos.
+
+### Contribuição da IA
+- Esclarecimento da correção de Holm para comparações múltiplas.
+- Discussão de gaps, rankings, correlações de Spearman e modelos potência.
+
+### Minha participação
+- Conferência das tabelas, métricas e gráficos gerados.
+- Seleção e interpretação dos resultados apresentados no artigo.
+
+### Validação registrada
+A suíte executada com `python -m unittest discover -s tests -p "test*.py" -v` apresentou 33 testes aprovados.
+
+## Registro 14 — Modalidade de utilização da ferramenta
+
+Durante o desenvolvimento, a ferramenta de IA utilizada foi o ChatGPT, por meio da interface convencional de conversa. Não foi utilizado o Codex nem um agente de programação integrado ao VS Code para operar autonomamente sobre o repositório ou executar comandos no terminal.
+
+As interações ocorreram por meio de perguntas e discussões. A ferramenta foi utilizada para esclarecer dúvidas, explicar conceitos, apontar possíveis problemas e apresentar alternativas de organização ou implementação. Quando sugestões de código foram discutidas, coube ao estudante avaliá-las, decidir se seriam aproveitadas, incorporá-las ao ambiente de desenvolvimento e executar os testes necessários.
