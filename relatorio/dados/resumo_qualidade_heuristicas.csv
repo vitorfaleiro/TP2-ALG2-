@@ -1,0 +1,5 @@
+﻿algoritmo,vitorias,gapMedioPercentual,gapMedianoPercentual,rankingMedio
+Convex Hull + Cheapest Insertion,15,0.0,0.0,1.0
+Christofides,0,9.799906759862932,7.480739599383668,2.2
+Nearest Neighbor,0,19.611658153280814,17.486338797814206,3.0
+Twice-around-the-tree,0,29.1130186122685,31.447963800904976,3.8

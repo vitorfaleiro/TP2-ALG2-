@@ -1,0 +1,8 @@
+﻿teste,comparacao,quantidadeInstancias,estatistica,valorP,significativo_0_05,valorPAjustadoHolm
+Friedman,Quatro algoritmos,15,38.51999999999998,2.193494408492656e-08,True,
+Wilcoxon,Nearest Neighbor vs Twice-around-the-tree,15,25.0,0.04791259765625,False,0.0511474609375
+Wilcoxon,Nearest Neighbor vs Christofides,15,21.0,0.02557373046875,False,0.0511474609375
+Wilcoxon,Nearest Neighbor vs Convex Hull + Cheapest Insertion,15,0.0,6.103515625e-05,True,0.0003662109375
+Wilcoxon,Twice-around-the-tree vs Christofides,15,0.0,6.103515625e-05,True,0.0003662109375
+Wilcoxon,Twice-around-the-tree vs Convex Hull + Cheapest Insertion,15,0.0,6.103515625e-05,True,0.0003662109375
+Wilcoxon,Christofides vs Convex Hull + Cheapest Insertion,15,0.0,6.103515625e-05,True,0.0003662109375

@@ -1,0 +1,36 @@
+﻿algoritmo,caracteristica,metrica,quantidadeInstancias,correlacaoSpearman,valorP,valorPAjustadoHolm,significativo_0_05
+Convex Hull + Cheapest Insertion,proporcaoFechoConvexo,tempoTotal,15,-0.8819334326473262,1.3708397458727614e-05,0.0004797939110554665,True
+Twice-around-the-tree,proporcaoFechoConvexo,tempoTotal,15,-0.8783556093911503,1.6495773616940813e-05,0.0005608563029759876,True
+Christofides,proporcaoFechoConvexo,tempoTotal,15,-0.8479441117136562,6.516563496653049e-05,0.0021504659538955063,True
+Nearest Neighbor,proporcaoFechoConvexo,tempoTotal,15,-0.8425773768293926,8.05411790019641e-05,0.0025773177280628513,True
+Convex Hull + Cheapest Insertion,aspectRatio,tempoTotal,15,-0.5821428571428571,0.02279368712641428,0.7066043009188426,False
+Christofides,grauMaximoAgm,tempoTotal,15,0.5669467095138407,0.027531588210939262,0.8259476463281779,False
+Nearest Neighbor,aspectRatio,tempoTotal,15,-0.5607142857142856,0.02967649609447474,0.8606183867397674,False
+Convex Hull + Cheapest Insertion,grauMaximoAgm,tempoTotal,15,0.5039526306789696,0.055439484931455084,1.0,False
+Twice-around-the-tree,aspectRatio,tempoTotal,15,-0.5035714285714286,0.05565451716115846,1.0,False
+Christofides,aspectRatio,tempoTotal,15,-0.48571428571428565,0.06642631232518953,1.0,False
+Convex Hull + Cheapest Insertion,cvVizinhoMaisProximo,tempoTotal,15,0.4428571428571427,0.0982940655468714,1.0,False
+Nearest Neighbor,grauMaximoAgm,tempoTotal,15,0.4409585518440984,0.09991602276086498,1.0,False
+Nearest Neighbor,cvVizinhoMaisProximo,tempoTotal,15,0.4392857142857142,0.10136057119347246,1.0,False
+Twice-around-the-tree,cvVizinhoMaisProximo,tempoTotal,15,0.4071428571428571,0.13201266377985368,1.0,False
+Twice-around-the-tree,grauMaximoAgm,tempoTotal,15,0.3779644730092272,0.16482344535684473,1.0,False
+Christofides,aspectRatio,gapPercentual,15,0.37499999999999994,0.16843274984674547,1.0,False
+Twice-around-the-tree,entropiaEspacial,gapPercentual,15,0.3142857142857143,0.25394001632367147,1.0,False
+Christofides,entropiaEspacial,tempoTotal,15,0.3,0.2773167803683841,1.0,False
+Nearest Neighbor,cvVizinhoMaisProximo,gapPercentual,15,-0.28928571428571426,0.2956653610043777,1.0,False
+Christofides,cvVizinhoMaisProximo,tempoTotal,15,0.28928571428571426,0.2956653610043777,1.0,False
+Convex Hull + Cheapest Insertion,entropiaEspacial,tempoTotal,15,0.23928571428571427,0.3903793119202356,1.0,False
+Nearest Neighbor,entropiaEspacial,gapPercentual,15,0.2071428571428571,0.4588428049634703,1.0,False
+Nearest Neighbor,aspectRatio,gapPercentual,15,0.16428571428571426,0.5584973732486013,1.0,False
+Christofides,grauMaximoAgm,gapPercentual,15,-0.15748519708717798,0.5751108778701778,1.0,False
+Nearest Neighbor,entropiaEspacial,tempoTotal,15,0.15714285714285714,0.5759526006037947,1.0,False
+Twice-around-the-tree,entropiaEspacial,tempoTotal,15,0.1464285714285714,0.602549920983054,1.0,False
+Twice-around-the-tree,aspectRatio,gapPercentual,15,0.13214285714285715,0.6387442188840664,1.0,False
+Nearest Neighbor,grauMaximoAgm,gapPercentual,15,0.1259881576697424,0.6545801615949524,1.0,False
+Christofides,proporcaoFechoConvexo,gapPercentual,15,0.1127014325695366,0.6892290163917693,1.0,False
+Twice-around-the-tree,cvVizinhoMaisProximo,gapPercentual,15,-0.075,0.7905107941552679,1.0,False
+Nearest Neighbor,proporcaoFechoConvexo,gapPercentual,15,0.06797864186733954,0.8097745490001909,1.0,False
+Twice-around-the-tree,grauMaximoAgm,gapPercentual,15,0.0629940788348712,0.8235125923431177,1.0,False
+Christofides,entropiaEspacial,gapPercentual,15,-0.04285714285714285,0.8794603130258999,1.0,False
+Christofides,cvVizinhoMaisProximo,gapPercentual,15,0.021428571428571425,0.9395779040128779,1.0,False
+Twice-around-the-tree,proporcaoFechoConvexo,gapPercentual,15,0.008944558140439412,0.9747615143669975,1.0,False
